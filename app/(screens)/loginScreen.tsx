@@ -7,16 +7,33 @@ import {
     View,
 } from "react-native";
 
+import { supabase } from "@/app/supabase";
+import { Link } from "expo-router";
 import { useState } from "react";
-
 export default function LogInScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const showValue = () => {
-    Alert.alert(
-      `Your username is ${username} and Your password is ${password}`,
-    );
+  const addUser = async () => {
+    const { data, error } = await supabase.from("users").insert([
+      {
+        username: username,
+        password: password,
+      },
+    ]);
+
+    if (error) {
+      console.log("Supabase Error:", error);
+      console.log("Message:", error.message);
+      console.log("Code:", error.code);
+      console.log("Details:", error.details);
+      console.log("Hint:", error.hint);
+      Alert.alert("Error");
+    } else {
+      Alert.alert("Succes");
+      setUsername("");
+      setPassword("");
+    }
   };
 
   return (
@@ -36,9 +53,19 @@ export default function LogInScreen() {
           value={password}
           onChangeText={(text) => setPassword(text)}
         ></TextInput>
-        <TouchableOpacity style={styles.loginBtn} onPress={showValue}>
+        <TouchableOpacity style={styles.loginBtn} onPress={addUser}>
           <Text>Log In</Text>
         </TouchableOpacity>
+        <Text>Or Sign in with</Text>
+        <TouchableOpacity style={styles.loginBtn}>
+          <Text>Google</Text>
+        </TouchableOpacity>
+        <Text>
+          Don't have an Account?
+          <Link href="/(screens)/signUpScreen" style={styles.signUpLink}>
+            Sign Up
+          </Link>
+        </Text>
       </View>
     </>
   );
@@ -67,5 +94,9 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     borderRadius: 10,
+  },
+
+  signUpLink: {
+    textDecorationLine: "underline",
   },
 });
