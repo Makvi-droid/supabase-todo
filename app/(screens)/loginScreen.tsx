@@ -1,13 +1,13 @@
 import {
-    Alert,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
-import { supabase } from "@/app/supabase";
+import { supabase } from "@/utils/supabase";
 import { Link } from "expo-router";
 import { useState } from "react";
 export default function LogInScreen() {

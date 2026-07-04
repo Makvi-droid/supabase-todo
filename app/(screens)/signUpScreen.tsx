@@ -8,7 +8,7 @@ import {
     View,
 } from "react-native";
 
-import { supabase } from "@/app/supabase";
+import { supabase } from "@/utils/supabase";
 
 import { useState } from "react";
 export default function LogInScreen() {
