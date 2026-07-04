@@ -1,11 +1,11 @@
 import { Link } from "expo-router";
 import {
-    Alert,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  Alert,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { supabase } from "@/utils/supabase";
@@ -16,6 +16,36 @@ export default function LogInScreen() {
   const [password, setPassword] = useState("");
 
   const addUser = async () => {
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const hasNumber = /[0123456789]/.test(password);
+    //check password length
+    if (password.length <= 8) {
+      Alert.alert("Password is too short");
+      return;
+    }
+
+    if (!hasSpecialChar) {
+      Alert.alert("Password needs special characters");
+      return;
+    }
+
+    if (!hasNumber) {
+      Alert.alert("Password needs a number");
+      return;
+    }
+
+    //form validation
+    if (username.trim() === "" && password.trim() == "") {
+      Alert.alert("Pls fill out both fields");
+      return;
+    } else if (username.trim() === "") {
+      Alert.alert("Pls fill out username");
+      return;
+    } else if (password.trim() === "") {
+      Alert.alert("Pls fill out password");
+      return;
+    }
+
     const { data, error } = await supabase.from("users").insert([
       {
         username: username,

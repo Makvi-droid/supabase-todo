@@ -15,25 +15,23 @@ export default function LogInScreen() {
   const [password, setPassword] = useState("");
 
   const addUser = async () => {
+    if (username.trim() === "" && password.trim() === "") {
+      Alert.alert("Pls fill out username and password");
+      return;
+    } else if (username.trim() == "") {
+      Alert.alert("Pls fill out username");
+      return;
+    } else {
+      Alert.alert("Pls fill out password");
+      return;
+    }
+
     const { data, error } = await supabase.from("users").insert([
       {
         username: username,
         password: password,
       },
     ]);
-
-    if (error) {
-      console.log("Supabase Error:", error);
-      console.log("Message:", error.message);
-      console.log("Code:", error.code);
-      console.log("Details:", error.details);
-      console.log("Hint:", error.hint);
-      Alert.alert("Error");
-    } else {
-      Alert.alert("Succes");
-      setUsername("");
-      setPassword("");
-    }
   };
 
   return (
